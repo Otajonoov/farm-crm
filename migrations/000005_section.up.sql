@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS "section" (
+    "name" VARCHAR(255) NOT NULL
+);

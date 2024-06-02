@@ -1,0 +1,8 @@
+CREATE TABLE IN NOT EXISTS food (
+    guid CHAR(36) PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    mass FLOAT NOT NULL
+);
+
+ALTER TABLE food
+    ADD CONSTRAINT food_guid_foreign FOREIGN KEY(guid) REFERENCES animal_type(guid) ON DELETE CASCADE;
