@@ -148,7 +148,7 @@ func (a animalPostgresRepo) Update(animal *domain.Animal) error {
 				last_fed_time = $5,
 				updated_at = $6`
 
-	_, err := a.db.Exec(context.Background(), query, animal.Descriptive(), animal.Weight(), animal.IsIll(), time.Now(), time.Now())
+	_, err := a.db.Exec(context.Background(), query, animal.Descriptive(), animal.Weight(), animal.IsIll(), animal.IsFed(), animal.LastFedTime(), time.Now())
 	if err != nil {
 		return errors.New("error updating animal")
 	}
