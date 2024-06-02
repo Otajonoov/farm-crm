@@ -16,7 +16,7 @@ services:
       - .env
     environment:
       GOCACHE: /go-cache
-    command: reflex -s -r '(\.go$|go\.mod)' -- go run cmd/app/main.go
+    command: "reflex -s -r '(\\.go$|go\\.mod)' -- go run cmd/app/main.go"
 
 
   migrate:

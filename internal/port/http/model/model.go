@@ -1,6 +1,7 @@
 package model
 
 type Animal struct {
+	Guid           string
 	AnimalTypeGuid string
 	Descriptive    string
 	Weight         float32
