@@ -27,6 +27,7 @@ func main() {
 	r := gin.Default()
 
 	var animalUsecase domain.AnimalUseCase
+	var animalTypeUsecase domain.AnimalTypeUseCase
 	var factory domain.Factory
 
 	animalHandler := v1.AnimalHandler{
@@ -34,11 +35,19 @@ func main() {
 		Factory: factory,
 	}
 
+	animalTypeHandler := v1.AnimalTypeHandler{
+		Usecase: animalTypeUsecase,
+		Factory: factory,
+	}
+	//animal
 	r.POST("/animals", animalHandler.Create)
 	r.GET("/animals/:guid", animalHandler.RetrieveById)
 	r.GET("/animals", animalHandler.RetrieveList)
 	r.PUT("/animals", animalHandler.Update)
 	r.DELETE("/animals/:guid", animalHandler.Delete)
+
+	//animal type
+	r.POST("/animalType", animalTypeHandler.Create)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
