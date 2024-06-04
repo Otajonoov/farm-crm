@@ -28,3 +28,9 @@ func (u *BaseUseCase) beforeRequestForAnimal(animal *domain.Animal) {
 		animal.SetUpdatedAt(time.Now())
 	}
 }
+
+func (u *BaseUseCase) beforeRequestForAnimalType(animal *domain.AnimalType) {
+	if animal.AnimalGuid() == "" {
+		animal.SetAnimalType(uuid.New().String())
+	}
+}

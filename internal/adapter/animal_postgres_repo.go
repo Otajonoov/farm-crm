@@ -26,6 +26,7 @@ type Animal struct {
 	weight      float32
 	isIll       bool
 	isFed       bool
+	isWatered   bool
 	lastFedTime time.Time
 	createdAt   time.Time
 	updatedAt   time.Time
@@ -39,13 +40,13 @@ func (a animalPostgresRepo) Save(animal *domain.Animal) error {
                     		weight, 
                     		is_ill, 
                     		is_fed, 
+                    		is_watered,
                     		last_fed_time, 
                     		created_at, 
                     		updated_at
         )
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-                    		
-                    		`
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+		`
 
 	_, err := a.db.Exec(context.Background(), query,
 		animal.Guid(),
@@ -74,10 +75,11 @@ func (a animalPostgresRepo) GetByGuid(s string) (*domain.Animal, error) {
                    a.weight,
                    a.is_ill,
                    a.is_fed, 
+                   a.is_watered,
                    a.last_fed_time, 
                    a.created_at, 
                    a.updated_at
-			FROM animals a
+			FROM animals as a
 			WHERE a.guid = $1
 		`
 
@@ -88,6 +90,7 @@ func (a animalPostgresRepo) GetByGuid(s string) (*domain.Animal, error) {
 		animal.Weight(),
 		animal.IsIll(),
 		animal.IsFed(),
+		animal.IsWatered(),
 		animal.LastFedTime(),
 		animal.CreatedAt(),
 		animal.UpdatedAt(),
@@ -100,16 +103,18 @@ func (a animalPostgresRepo) GetByGuid(s string) (*domain.Animal, error) {
 }
 
 func (a animalPostgresRepo) GetAll() (animals []domain.Animal, err error) {
-	query := `SELECT a.guid,
+	query := `
+				SELECT a.guid,
        				 a.animal_type_guid,
        				 a.descriptive,
        				 a.weight,
        				 a.is_ill,
        				 a.if_fed,
+       				 a.is_watered,
        				 a.last_fed_time,
        				 a.created_at,
        				 a.updated_at
-				FROM animals a`
+				FROM animals as a`
 
 	rows, err := a.db.Query(context.Background(), query)
 	if err != nil {
@@ -132,7 +137,7 @@ func (a animalPostgresRepo) GetAll() (animals []domain.Animal, err error) {
 		); err != nil {
 			return nil, errors.New("failed to scan rows")
 		}
-		animalFactory := a.factory.ParseToDomain(animal.guid, animal.animalType, animal.descriptive, animal.weight, animal.isIll, animal.isFed, animal.lastFedTime, animal.createdAt, animal.updatedAt)
+		animalFactory := a.factory.ParseToDomain(animal.guid, animal.animalType, animal.descriptive, animal.weight, animal.isIll, animal.isFed, animal.isWatered, animal.lastFedTime, animal.createdAt, animal.updatedAt)
 		animals = append(animals, *animalFactory)
 	}
 
@@ -140,7 +145,8 @@ func (a animalPostgresRepo) GetAll() (animals []domain.Animal, err error) {
 }
 
 func (a animalPostgresRepo) Update(animal *domain.Animal) error {
-	query := `UPDATE animals SET
+	query := `
+			UPDATE animals SET
 				description = $1,
 				weight = $2,
 				is_ill = $3,

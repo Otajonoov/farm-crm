@@ -31,7 +31,7 @@ func (a AnimalHandler) Create(c *gin.Context) {
 		return
 	}
 
-	animalFactory := a.Factory.ParseToDomainFor(animal.AnimalTypeGuid, animal.Descriptive, animal.Weight, animal.IsIll, animal.IsFed)
+	animalFactory := a.Factory.ParseToDomainFor(animal.AnimalTypeGuid, animal.Descriptive, animal.Weight, animal.IsIll, animal.IsFed, animal.IsWatered)
 	err := a.Usecase.Create(animalFactory)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -96,7 +96,7 @@ func (a AnimalHandler) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	factory := a.Factory.ParseToDomainFor(animal.AnimalTypeGuid, animal.Descriptive, animal.Weight, animal.IsIll, animal.IsFed)
+	factory := a.Factory.ParseToDomainFor(animal.AnimalTypeGuid, animal.Descriptive, animal.Weight, animal.IsIll, animal.IsFed, animal.IsWatered)
 	err := a.Usecase.Update(factory)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

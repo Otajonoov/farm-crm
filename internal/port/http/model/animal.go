@@ -7,4 +7,5 @@ type Animal struct {
 	Weight         float32
 	IsIll          bool
 	IsFed          bool
+	IsWatered      bool
 }
