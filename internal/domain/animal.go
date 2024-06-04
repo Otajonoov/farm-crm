@@ -9,6 +9,7 @@ type Animal struct {
 	weight         float32
 	isIll          bool
 	isFed          bool
+	isWatered      bool
 	lastFedTime    time.Time
 	createdAt      time.Time
 	updatedAt      time.Time
@@ -60,6 +61,14 @@ func (a *Animal) IsFed() bool {
 
 func (a *Animal) SetIsFed(isFed bool) {
 	a.isFed = isFed
+}
+
+func (a *Animal) IsWatered() bool {
+	return a.isWatered
+}
+
+func (a *Animal) SetIsWatered(isWatered bool) {
+	a.isWatered = isWatered
 }
 
 func (a *Animal) LastFedTime() time.Time {

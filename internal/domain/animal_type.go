@@ -29,3 +29,17 @@ func (a *AnimalType) Count() int {
 func (a *AnimalType) SetCount(count int) {
 	a.count = count
 }
+
+type AnimalTypeRepository interface {
+	Save(*AnimalType) error
+	GetAnimalTypeInfo() ([]AnimalType, error)
+	Update(AnimalType) error
+	Delete(string) error
+}
+
+type AnimalTypeUseCase interface {
+	Create(*AnimalType) error
+	GetAnimalTypeInfo() ([]AnimalType, error)
+	Update(AnimalType) error
+	Delete(string) error
+}
